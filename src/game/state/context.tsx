@@ -1,11 +1,14 @@
 import { ReactNode, useRef, useState } from 'react';
-import { GameState, GameStateType } from './entities/interfaces/GameState';
+import { GameState, GameStateType } from './GameState';
+import Game from '../entities/Game';
+import { detachControls } from '../controls';
 
 export const GameStateProvider = ({ children } : {children: ReactNode }) => {
     const [initialized, setInitialized] = useState(false)
     const [isRunning, setIsRunning] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [score, setScore] = useState(0);
+    const [game, setGame] = useState(new Game());
 
     const pausedRef = useRef(false);
 
@@ -20,6 +23,7 @@ export const GameStateProvider = ({ children } : {children: ReactNode }) => {
         setIsRunning(true);
         setIsPaused(false);
         pausedRef.current = false;
+        setInitialized(false);
     }
 
     const resumeGame = () => {
@@ -32,6 +36,9 @@ export const GameStateProvider = ({ children } : {children: ReactNode }) => {
         setIsRunning(false);
         setIsPaused(false);
         pausedRef.current = false;
+        game.clearGameState();
+        detachControls(game);
+        setGame(new Game());
     }
 
     const value: GameStateType = {
@@ -46,6 +53,8 @@ export const GameStateProvider = ({ children } : {children: ReactNode }) => {
         resumeGame,
         endGame,
         pausedRef,
+        game,
+        setGame
     }
 
     return <GameState.Provider value={value}>{children}</GameState.Provider>

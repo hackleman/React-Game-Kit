@@ -1,4 +1,5 @@
 import { createContext, Dispatch, RefObject, useContext } from "react";
+import Game from "../entities/Game";
 
 export interface GameStateType {
     isRunning: boolean;
@@ -12,6 +13,8 @@ export interface GameStateType {
     resumeGame: () => void;
     endGame: () => void;
     pausedRef: RefObject<boolean>;
+    game: Game;
+    setGame: Dispatch<Game>;
 }
 export const GameState = createContext<GameStateType | undefined>(undefined);
 

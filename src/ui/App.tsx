@@ -1,37 +1,31 @@
-import { useRef } from 'react';
-import { useGameLoop } from '../game';
+import { useGameState } from '../game/state/GameState';
+import { useConnection } from '../game/hooks/sockets';
+import { useGameLoop } from '../game/hooks/game';
 import StartScreen from './components/StartScreen';
-import PauseScreen from './components/PauseScreen';
-import { useGameState } from '../game/entities/interfaces/GameState';
-import './App.css'
+import styled from '@emotion/styled';
+
+const ScoreBoard = styled.span`
+  position: absolute;
+  color: white;
+  padding: 8px;
+  font-family: sans-serif;
+  font-size: 14px;
+  user-select: none;
+`;
 
 function App() {
-  const canvasRef = useRef(null);
-  useGameLoop(canvasRef.current);
+  const { score, isRunning } = useGameState();
 
-  const { score, initialized, isRunning, isPaused, startGame, resumeGame } = useGameState();
+  useGameLoop();
+  useConnection();
 
   return (
     <>
       {!isRunning && (
-        <StartScreen 
-          onStartGame={() => startGame()} 
-          score={score}
-          initialized={initialized}
-        />
+        <StartScreen />
       )}
-      {
-        isPaused && (
-          <PauseScreen 
-            resumeGame={() => resumeGame()}
-            score={score}
-          />
-        )
-      }
-      <div id="score-board">
-        <span>Score: <span id="scoreEl">{ score }</span></span>
-      </div>
-      <canvas ref={canvasRef}></canvas>
+      <ScoreBoard>Score: {score}</ScoreBoard>
+      <canvas ></canvas>
     </>
   )
 }

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useGameState } from '../../game/state/GameState';
 
 const StartGameContainer = styled.div`
   position: absolute;
@@ -45,12 +46,14 @@ const Score = styled.h1`
   text-align: left;
 `;
 
-const StartGameScreen = ({ onStartGame, score, initialized }: { onStartGame: () => void, score: number, initialized: boolean}) => {
+const StartGameScreen = () => {
+  const { initialized, score, startGame } = useGameState();
+  
     return (
       <StartGameContainer>
         <div>
           <Title>{!initialized ? "Ball Click Game!" : "Nice Try!"}</Title>
-          <StartGameButton onClick={onStartGame}>
+          <StartGameButton onClick={startGame}>
             {!initialized ? "Start Game" : "Retry?"}
           </StartGameButton>
           {

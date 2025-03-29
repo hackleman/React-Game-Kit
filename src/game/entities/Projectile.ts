@@ -6,13 +6,15 @@ export default class Projectile {
     radius: number
     color: string
     velocity: Velocity
+    id: string
 
-    constructor(x: number, y: number, radius: number, color: string, velocity: Velocity) {
+    constructor(x: number, y: number, radius: number, color: string, velocity: Velocity, id: string) {
       this.x = x
       this.y = y
       this.radius = radius
       this.color = color
       this.velocity = velocity
+      this.id = id;
     }
   
     draw(c: CanvasRenderingContext2D) {
@@ -27,4 +29,4 @@ export default class Projectile {
       this.x = this.x + this.velocity.x;
       this.y = this.y + this.velocity.y;
     }
-  }
+}

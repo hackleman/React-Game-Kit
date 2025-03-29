@@ -1,0 +1,1 @@
+export const SERVER_TICK_RATE = 13.33;
