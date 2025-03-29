@@ -60,6 +60,7 @@ export const removePlayer = (socketId: string, game: Game, endGame: () => void) 
     if (game.player.networkId == socketId) {
         endGame();
     } else {
+        game.initParticles(socketId);
         game.enemies.delete(socketId);
     }
 }

@@ -35,6 +35,7 @@ export default class Game {
     attachCanvas(canvas?: HTMLCanvasElement) {
         this.canvas = !canvas ? document.querySelector('canvas') : canvas;
         this.context = this.canvas?.getContext('2d')!!;
+        this.context.fillStyle = 'rgba(0, 0, 0, 0.1)';
         if (this.canvas) {
             this.canvas.width = 1280
             this.canvas.height = 720
@@ -59,6 +60,30 @@ export default class Game {
 
     initEnemy(enemy: Player) {
         this.enemies.set(enemy.networkId!!, enemy);
+    }
+
+    initParticles(enemyId: string) {
+        const enemy = this.enemies.get(enemyId);
+        if (enemy) {
+            for (let i = 0; i < enemy.radius * 20; i++) {
+                this.particles.push(
+                    new Particle(
+                    enemy.x,
+                    enemy.y,
+                    Math.random() * 2,
+                    `rgb(
+                        ${Math.random() * 255}
+                        ${Math.random() * 255}
+                        ${Math.random() * 255}
+                    )`,
+                    {
+                        x: (Math.random() - 0.5) * (Math.random() * 9),
+                        y: (Math.random() - 0.5) * (Math.random() * 8)
+                    }
+                    )
+                )
+            }
+        }
     }
 
     updatePlayers() {
